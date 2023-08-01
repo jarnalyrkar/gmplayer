@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="./dist/css/site.css">
+    <title>Game Master Player</title>
+  </head>
+  <body>
+    <div class="blurred-underlay"></div>
+    <div class="header-bg"></div>
+    <main>
+      <section id="themes">
+        <button class="button" data-action="themes-toggle">
+          <span class="arrow">
+            <svg width="33.866665mm" height="33.866665mm" viewBox="0 0 33.866665 33.866665" version="1.1" id="svg14224" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+              <defs id="defs14221"></defs>
+              <g id="layer1" style="stroke-width:5;stroke-dasharray:none">
+                <g id="g14745" transform="translate(0.39687429,1.0583326)" style="stroke-width:5;stroke-dasharray:none">
+                  <path style="fill:none;stroke:currentColor;stroke-width:5;stroke-linecap:round;stroke-dasharray:none" d="M 2.6458333,15.875 H 30.427083" id="path14373"></path>
+                  <path style="fill:none;stroke:currentColor;stroke-width:5;stroke-linecap:round;stroke-dasharray:none" d="M 15.875,9.2604166 2.6458333,15.875" id="path14375"></path>
+                  <path style="fill:none;stroke:currentColor;stroke-width:5;stroke-linecap:round;stroke-dasharray:none" d="M 2.6458333,15.875 15.875,22.489583" id="path14377"></path>
+                </g>
+              </g>
+            </svg>
+          </span>
+          Themes
+        </button>
+        <header>
+          <h2>Add theme</h2>
+        <fieldset class="create-inputs">
+          <input type="text" id="new-theme" placeholder="E.g The Heart of Flamespike Citadel">
+          <button class="button button--action" data-action="add">
+            <svg width="33.866665mm" height="33.866665mm" viewBox="0 0 33.866665 33.866665" version="1.1" id="svg10368" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+              <defs id="defs10365"></defs>
+              <g id="layer1" style="stroke-width:5;stroke-dasharray:none">
+                <path style="fill:none;stroke:currentColor;stroke-width:4.7009;stroke-linecap:round;stroke-dasharray:none" d="M 3.485528,16.933332 H 30.381137" id="path10554"></path>
+                <path style="fill:none;stroke:currentColor;stroke-width:4.9391;stroke-linecap:round;stroke-dasharray:none" d="M 16.933332,3.3790482 V 30.487617" id="path10556"></path>
+              </g>
+            </svg>
+          </button>
+        </fieldset>
+        </header>
+        <ul class="list">
+          <li class="empty">No themes added yet!</li>
+        </ul>
+      </section>
+      <div class="theme-related">
+        <section id="presets">
+        </section>
+        <section id="tracks"></section>
+        <section id="effects"></section>
+      </div>
+    </main>
+    <aside>
+      <div id="infobox" class="dialog"></div>
+      <div id="toast" class="toast"></div>
+      <div id="settings" class="dialog"></div>
+    </aside>
+    <footer class="app-footer">
+      <div class="app-footer__buttons">
+        <button class="button button--action" data-action="settings" aria-label="Settings" title="Settings">
+          <svg width="33.866665mm" height="33.866665mm" viewBox="0 0 33.866665 33.866665" version="1.1" id="svg6572" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+            <defs id="defs6569"></defs>
+            <ellipse style="fill:none;stroke:currentColor;stroke-width:4;stroke-linecap:round;stroke-dasharray:none" id="path7211" cx="16.933332" cy="16.933332" rx="13.150763" ry="13.150764"></ellipse>
+            <rect style="fill:none;stroke:currentColor;stroke-width:2.15654;stroke-linecap:round;stroke-dasharray:none" id="rect7265" width="1.491479" height="4.9672899" x="1.0782691" y="13.904377"></rect>
+            <rect style="fill:none;stroke:currentColor;stroke-width:2.15654;stroke-linecap:round;stroke-dasharray:none" id="rect7265-3" width="1.491479" height="4.9672899" x="31.296915" y="14.399462"></rect>
+            <rect style="fill:none;stroke:currentColor;stroke-width:2.15654;stroke-linecap:round;stroke-dasharray:none" id="rect7265-6" width="1.491479" height="4.9672899" x="-2.625628" y="14.449687" transform="rotate(-90)"></rect>
+            <rect style="fill:none;stroke:currentColor;stroke-width:2.15654;stroke-linecap:round;stroke-dasharray:none" id="rect7265-6-7" width="1.491479" height="4.9672899" x="-32.769207" y="14.556815" transform="rotate(-90)"></rect>
+            <rect style="fill:none;stroke:currentColor;stroke-width:2.15654;stroke-linecap:round;stroke-dasharray:none" id="rect7265-6-5" width="1.491479" height="4.9672899" x="-8.3889418" y="-2.8929281" transform="rotate(-137.49815)"></rect>
+            <rect style="fill:none;stroke:currentColor;stroke-width:2.15654;stroke-linecap:round;stroke-dasharray:none" id="rect7265-6-5-3" width="1.491479" height="4.9672899" x="-40.951717" y="-4.1619539" transform="rotate(-137.49815)"></rect>
+            <rect style="fill:none;stroke:currentColor;stroke-width:2.15654;stroke-linecap:round;stroke-dasharray:none" id="rect7265-6-5-5" width="1.491479" height="4.9672899" x="14.491852" y="22.075455" transform="rotate(-47.49815)"></rect>
+            <rect style="fill:none;stroke:currentColor;stroke-width:2.15654;stroke-linecap:round;stroke-dasharray:none" id="rect7265-6-5-6" width="1.491479" height="4.9672899" x="-18.070923" y="20.806435" transform="rotate(-47.49815)"></rect>
+            <ellipse style="fill:none;stroke:currentColor;stroke-width:2.60607;stroke-linecap:round;stroke-dasharray:none" id="path7415" cx="16.933332" cy="16.933332" rx="10.317212" ry="10.35352"></ellipse>
+          </svg>
+        </button>
+        <button class="button button--action" data-action="info" aria-label="Information" title="Information">
+          <svg width="33.866665mm" height="33.866665mm" viewBox="0 0 33.866665 33.866665" version="1.1" id="svg7555" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+            <defs id="defs7552"></defs>
+            <g id="layer1">
+              <ellipse style="fill:currentColor;fill-opacity:1;stroke:currentColor;stroke-width:3.70591;stroke-linecap:round;stroke-opacity:1" id="path7921" cx="16.933332" cy="5.1900673" rx="2.3571475" ry="2.8070745"></ellipse>
+              <rect style="fill:currentColor;fill-opacity:1;stroke:currentColor;stroke-width:2.85223;stroke-linecap:round;stroke-opacity:1" id="rect8546" width="4.2440848" height="18.157255" x="14.81129" y="13.516632"></rect>
+              <path style="fill:currentColor;fill-opacity:1;stroke:currentColor;stroke-width:0.92328;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1" d="m 9.4269014,12.622726 h 3.3623566 v 1.736046 z" id="path8613"></path>
+              <path style="fill:currentColor;fill-opacity:1;stroke:currentColor;stroke-width:0.92328;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1" d="m 24.439764,12.622726 h -3.362356 v 1.736046 z" id="path8613-2"></path>
+              <path style="fill:currentColor;fill-opacity:1;stroke:currentColor;stroke-width:1.01955;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1" d="M 24.414986,32.732457 H 21.063729 V 30.6085 Z" id="path8613-2-9"></path>
+              <path style="fill:currentColor;fill-opacity:1;stroke:currentColor;stroke-width:1.01955;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1" d="m 9.45168,32.732457 h 3.351257 V 30.6085 Z" id="path8613-2-9-1"></path>
+            </g>
+          </svg>
+        </button>
+        <button class="button button--action" data-action="stop" aria-label="Stop" title="Stop">
+          <svg width="33.866665mm" height="33.866665mm" viewBox="0 0 33.866665 33.866665" version="1.1" id="svg9754" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+            <defs id="defs9751"></defs>
+            <g id="layer1">
+              <rect style="fill:currentColor;stroke:currentColor;stroke-width:1.00715;stroke-linecap:round" id="rect9875" width="28.992855" height="28.992855" x="2.4369049" y="2.4369049"></rect>
+            </g>
+          </svg>
+        </button>
+      </div>
+      <div class="app-footer__sliders">
+        <div class="volume-slider">
+          <label class="volume-slider__label">Effects</label>
+          <div class="volume-slider__bar">
+            <svg width="33.866665mm" height="33.866665mm" viewBox="0 0 33.866665 33.866665" version="1.1" id="svg5" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+            <defs id="defs2"></defs>
+            <g id="layer1">
+              <g id="g2431" transform="matrix(5.1235583,0,0,5.1235583,-3.0628231,-3.5607639)">
+                <path style="fill:currentColor;fill-opacity:1;stroke:currentColor;stroke-width:1;stroke-dasharray:none;stroke-opacity:1" d="M 1.148436,5 V 3 h 1.8 l 1.0817172,-1 2.828e-4,4 -1.082,-1 z" id="path553"></path>
+                <path style="fill:currentColor;stroke:currentColor;stroke-width:0.25;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1" d="m 5.1769609,2.8247131 c 0.2020063,0.7667422 0.2365657,1.5345474 0,2.3010127" id="path2314"></path>
+                <path style="fill:currentColor;stroke:currentColor;stroke-width:0.25;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1" d="m 5.8457202,2.1627484 c 0.4828216,0.7753507 0.4044393,2.949648 -0.097706,3.7079718" id="path2314-3"></path>
+                <path d="m 6.553013,1.2019998 c 0.6740029,0.7901074 0.7112448,4.993533 0.075139,5.7415167" style="fill:currentColor;stroke:currentColor;stroke-width:0.25;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1" id="path2392"></path>
+              </g>
+            </g>
+          </svg>
+          <div class="volume-slider__background">
+            <input id="effects-volume" type="range" min="0" max="100" value="75">
+          </div>
+        </div>
+        </div>
+      </div>
+    </footer>
+  </body>
+  <script src="./renderer.js"></script>
+  <script src="./dist/js/site.js"></script>
+</html>

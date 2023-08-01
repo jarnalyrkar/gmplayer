@@ -1,0 +1,12 @@
+.list {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+  & .empty {
+    background-color: var(--primary-400-trans);
+    padding: .65rem;
+    width: 100%;
+    max-width: unset !important;
+  }
+}

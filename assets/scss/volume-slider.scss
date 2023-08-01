@@ -1,0 +1,13 @@
+.volume-slider {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  & svg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+  &__bar {
+    display: flex;
+    gap: .5rem;
+  }
+}

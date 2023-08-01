@@ -1,0 +1,43 @@
+{
+  "name": "gmplayer",
+  "version": "1.0.0",
+  "description": "Game Master Player, for layering music and ambience",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron-forge start",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "package": "electron-forge package",
+    "make": "electron-forge make",
+    "postinstall": "electron-rebuild",
+    "watch": "webpack --config ./webpack.config.js"
+  },
+  "author": "Joachim Strøm",
+  "license": "MIT",
+  "devDependencies": {
+    "@electron-forge/cli": "^6.2.1",
+    "@electron-forge/maker-deb": "^6.2.1",
+    "@electron-forge/maker-rpm": "^6.2.1",
+    "@electron-forge/maker-squirrel": "^6.2.1",
+    "@electron-forge/maker-zip": "^6.2.1",
+    "@electron-forge/plugin-auto-unpack-natives": "^6.2.1",
+    "electron": "^25.3.2",
+    "electron-builder": "^24.6.3",
+    "electron-rebuild": "^3.2.9",
+    "webpack-cli": "^5.1.4"
+  },
+  "dependencies": {
+    "babel-loader": "^9.1.3",
+    "browser-sync-webpack-plugin": "^2.3.0",
+    "clean-webpack-plugin": "^4.0.0",
+    "css-loader": "^6.8.1",
+    "css-minimizer-webpack-plugin": "^5.0.1",
+    "electron-squirrel-startup": "^1.0.0",
+    "mini-css-extract-plugin": "^2.7.6",
+    "sass": "^1.64.2",
+    "sass-loader": "^13.3.2",
+    "source-map-loader": "^4.0.1",
+    "sqlite3": "^5.1.6",
+    "terser-webpack-plugin": "^5.3.9",
+    "webpack": "^5.88.2"
+  }
+}

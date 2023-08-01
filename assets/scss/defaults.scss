@@ -1,0 +1,48 @@
+body {
+  margin: unset;
+}
+
+* {
+  font-family: var(--font);
+  box-sizing: border-box;
+  color: var(--accent);
+}
+
+ul {
+  padding: unset;
+  margin: 0;
+  list-style: none;
+}
+
+html {
+  font-size: 18px;
+}
+
+svg {
+  max-width: 100%;
+  height: auto;
+  pointer-events: none;
+  color: currentColor;
+}
+
+header {
+  margin-block: 3rem;
+}
+
+fieldset {
+  border: unset;
+  padding: unset;
+}
+
+::placeholder {
+  color: var(--primary-100);
+}
+
+input[type=text] {
+  font-size: inherit;
+  background-color: var(--primary-500);
+  border: 1px solid var(--primary-300);
+  outline: none;
+  padding: .5rem 1rem;
+  flex: 1;
+}

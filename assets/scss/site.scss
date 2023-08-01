@@ -1,0 +1,10 @@
+@use './root' as *;
+@use './defaults' as *;
+@use './layout' as *;
+@use './button' as *;
+@use './volume-slider' as *;
+@use './list' as *;
+
+body {
+  background-color: var(--primary-600);
+}
