@@ -1,12 +1,49 @@
+section:not(#effect) .list__item + .list__item {
+  margin-top: 1rem;
+}
+
 .list {
   display: flex;
   flex-direction: column;
   overflow-y: auto;
-  scrollbar-gutter: stable;
+  padding-bottom: 1rem;
   & .empty {
     background-color: var(--primary-400-trans);
     padding: .65rem;
     width: 100%;
     max-width: unset !important;
+  }
+  & .list__item {
+    display: flex;
+    gap: .5rem;
+    & > input[type=button],
+    & > input[type=text],
+    & > textarea {
+      background-color: var(--primary-500);
+      color: var(--accent);
+      border: 1px solid var(--primary-300);
+      padding: .5rem 1rem;
+      flex: 1;
+      text-align: start;
+      transition: background-color 300ms, transform 200ms;
+      white-space: break-spaces;
+      outline: none;
+      font-size: 1rem;
+    }
+    &[draggable="true"]::before {
+      pointer-events: auto;
+      content: "";
+      width: 15px;
+      display: block;
+      cursor: move;
+      background-color: var(--primary-600-trans);
+      filter: brightness(2);
+      -webkit-mask-size: 100%;
+      mask-size: 100%;
+      -webkit-mask-image: url(../img/boxes-horizontal.svg);
+      mask-image: url(../img/boxes-horizontal.svg);
+      -webkit-mask-repeat: repeat-y;
+      mask-repeat: repeat-y;
+    }
   }
 }

@@ -14,6 +14,9 @@ class DB {
     //   results.push(rows)
     // })
   }
+  get_init_settings() {
+    return {'option': 'last_theme_id', 'value': 123}
+  }
 
 }
 

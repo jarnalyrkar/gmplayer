@@ -1,21 +1,12 @@
-const { app, BrowserWindow, ipcMain } = require('electron')
-const path = require('path')
-const DB = require('./DB')
+const { app, BrowserWindow } = require('electron')
+const ejse = require('ejs-electron')
 
-const db = new DB()
+let mainWindow
 
-const createWindow = () => {
-  const win = new BrowserWindow({
-    width: 800,
-    height: 600,
-    webPreferences: {
-      preload: path.join(__dirname, 'preload.js')
-    }
-  })
-  win.loadFile('index.html')
-}
+ejse.data('last_active_theme', 1)
+ejse.data('last_active_preset', 2)
 
-app.whenReady().then(() => {
-  ipcMain.handle('get_setting_by_name', (stuff, param) => db.get_setting_by_name(param))
-  createWindow()
+app.on('ready', () => {
+  mainWindow = new BrowserWindow()
+  mainWindow.loadURL('file://' + __dirname + '/views/index.ejs')
 })

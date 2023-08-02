@@ -1,0 +1,29 @@
+<ul class="list">
+  <% if (list && list.length > 0) { %>
+    <% list.forEach(function(item) { %>
+      <li class="list__item" data-order="<%= item.order %>" data-id="<%= item.id %>" draggable="true"
+        <% if (type === 'theme' || type === 'preset') { %>
+            <%= (item.id === last_active_theme && type === 'theme' ||
+                item.id === last_active_preset && type === 'preset') ? " data-state=\"selected\"" : '' %>
+        <% } %>
+      >
+      <% if (type === 'theme' || type === 'preset') { %>
+        <input data-action="select" type="button" value="<%= item.title %>">
+      <% } %>
+      <%# if type track, use track-item.ejs  #%>
+      <%# if type effect, use effect-item.ejs  #%>
+          <div class="actions">
+            <% if (type === "track") { %>
+              <button class="button button--action" data-action="play"><%- include('../icons/play.svg') %></button>
+            <% } %>
+            <% if (type === "track" || type === "effect") { %>
+              <button class="button button--action" data-action="see-files"><%- include('../icons/gear.svg') %></button>
+            <% } %>
+            <button class="button button--action" data-action="delete"><%- include('../icons/trashcan.svg') %></button>
+          </div>
+        </li>
+    <% }) %>
+  <% } else { %>
+    <li class="empty">No <%= type %>s added yet!</li>
+  <% } %>
+</ul>

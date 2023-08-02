@@ -5,11 +5,13 @@ main {
   position: relative;
   height: 100vh;
 }
-
+#theme { // Skal settes av client-js
+  width: 400px;
+}
 .theme-related {
   display: grid;
   justify-content: space-between;
-  grid-template-columns: auto minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
   margin-left: 1rem;
   gap: 1rem;
   flex: 1;
@@ -25,7 +27,7 @@ main {
   justify-content: space-between;
   background-color: var(--primary-600);
   border-top: var(--primary-200) 2px solid;
-  padding: .5rem 2rem;
+  padding: .5rem 1rem;
   color: var(--accent);
   align-items: center;
   &__buttons {
@@ -36,6 +38,11 @@ main {
 }
 
 .create-inputs {
+  display: flex;
+  gap: .5rem;
+}
+
+.actions {
   display: flex;
   gap: .5rem;
 }

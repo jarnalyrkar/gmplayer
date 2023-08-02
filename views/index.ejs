@@ -2,53 +2,34 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <link rel="stylesheet" href="./dist/css/site.css">
+    <link rel="stylesheet" href="../dist/css/site.css">
     <title>Game Master Player</title>
   </head>
   <body>
     <div class="blurred-underlay"></div>
     <div class="header-bg"></div>
     <main>
-      <section id="themes">
+      <section id="theme">
         <button class="button" data-action="themes-toggle">
-          <span class="arrow">
-            <svg width="33.866665mm" height="33.866665mm" viewBox="0 0 33.866665 33.866665" version="1.1" id="svg14224" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
-              <defs id="defs14221"></defs>
-              <g id="layer1" style="stroke-width:5;stroke-dasharray:none">
-                <g id="g14745" transform="translate(0.39687429,1.0583326)" style="stroke-width:5;stroke-dasharray:none">
-                  <path style="fill:none;stroke:currentColor;stroke-width:5;stroke-linecap:round;stroke-dasharray:none" d="M 2.6458333,15.875 H 30.427083" id="path14373"></path>
-                  <path style="fill:none;stroke:currentColor;stroke-width:5;stroke-linecap:round;stroke-dasharray:none" d="M 15.875,9.2604166 2.6458333,15.875" id="path14375"></path>
-                  <path style="fill:none;stroke:currentColor;stroke-width:5;stroke-linecap:round;stroke-dasharray:none" d="M 2.6458333,15.875 15.875,22.489583" id="path14377"></path>
-                </g>
-              </g>
-            </svg>
-          </span>
+          <span class="arrow"><%- include('./icons/arrow.svg') %></span>
           Themes
         </button>
-        <header>
-          <h2>Add theme</h2>
-        <fieldset class="create-inputs">
-          <input type="text" id="new-theme" placeholder="E.g The Heart of Flamespike Citadel">
-          <button class="button button--action" data-action="add">
-            <svg width="33.866665mm" height="33.866665mm" viewBox="0 0 33.866665 33.866665" version="1.1" id="svg10368" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
-              <defs id="defs10365"></defs>
-              <g id="layer1" style="stroke-width:5;stroke-dasharray:none">
-                <path style="fill:none;stroke:currentColor;stroke-width:4.7009;stroke-linecap:round;stroke-dasharray:none" d="M 3.485528,16.933332 H 30.381137" id="path10554"></path>
-                <path style="fill:none;stroke:currentColor;stroke-width:4.9391;stroke-linecap:round;stroke-dasharray:none" d="M 16.933332,3.3790482 V 30.487617" id="path10556"></path>
-              </g>
-            </svg>
-          </button>
-        </fieldset>
-        </header>
-        <ul class="list">
-          <li class="empty">No themes added yet!</li>
-        </ul>
+        <%- include('./partials/list-header', {'type': 'theme', 'placeholder': "E.g The Flamespike Citadel"}) %>
+        <%- include('./partials/list', {'type': 'theme', 'list': [{'id': 1, 'title': 'My theme'}, {'id': 2, 'title': "Another theme"}]}) %>
       </section>
       <div class="theme-related">
-        <section id="presets">
+        <section id="preset">
+          <%- include('./partials/list-header', {'type': 'preset', 'placeholder': "E.g Tavern, Forest, Temple, Goblin Hideout"}) %>
+          <%- include('./partials/list', {'type': 'preset', 'list': [{'id': 1, 'title': 'Default'}, {'id': 2, 'title': "My Preset"}]}) %>
         </section>
-        <section id="tracks"></section>
-        <section id="effects"></section>
+        <section id="track">
+          <%- include('./partials/list-header', {'type': 'track', 'placeholder': "E.g Howling Wind, Bard Music, Crackling Fire"}) %>
+          <%- include('./partials/list', {'type': 'track', 'list': []}) %>
+        </section>
+        <section id="effect">
+          <%- include('./partials/list-header', {'type': 'effect', 'placeholder': "E.g War Cry, Weapon Hits, Fire Spell"}) %>
+          <%- include('./partials/list', {'type': 'effect', 'list': []}) %>
+        </section>
       </div>
     </main>
     <aside>
@@ -118,6 +99,6 @@
       </div>
     </footer>
   </body>
-  <script src="./renderer.js"></script>
-  <script src="./dist/js/site.js"></script>
+  <script src="../renderer.js"></script>
+  <script src="../dist/js/site.js"></script>
 </html>
