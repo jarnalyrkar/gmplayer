@@ -9,6 +9,9 @@
 @use './effect';
 @use './files';
 @use './states';
+@use './dialog';
+@use './toast';
+@use './settings';
 
 body {
   background-color: var(--primary-600);
