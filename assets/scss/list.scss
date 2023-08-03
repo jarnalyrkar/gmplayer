@@ -7,12 +7,6 @@ section:not(#effect) .list__item + .list__item {
   flex-direction: column;
   overflow-y: auto;
   padding-bottom: 1rem;
-  & .empty {
-    background-color: var(--primary-400-trans);
-    padding: .65rem;
-    width: 100%;
-    max-width: unset !important;
-  }
   & .list__item {
     display: flex;
     gap: .5rem;
@@ -29,6 +23,25 @@ section:not(#effect) .list__item + .list__item {
       white-space: break-spaces;
       outline: none;
       font-size: 1rem;
+      &:hover {
+        background-color:var(--primary-100);
+      }
+      &:active {
+        transform: rotate(1deg);
+      }
+    }
+    & input[type=text] {
+      padding-right: 0;
+    }
+    & input[type=button] {
+      pointer-events: auto;
+    }
+    &[data-state=selected] {
+      & input[type=button] {
+        color: var(--primary-600);
+        border: 1px solid var(--primary-300);
+        background-color: var(--accent);
+      }
     }
     &[draggable="true"]::before {
       pointer-events: auto;
@@ -40,8 +53,8 @@ section:not(#effect) .list__item + .list__item {
       filter: brightness(2);
       -webkit-mask-size: 100%;
       mask-size: 100%;
-      -webkit-mask-image: url(../img/boxes-horizontal.svg);
-      mask-image: url(../img/boxes-horizontal.svg);
+      -webkit-mask-image: url(../../assets/img/boxes-horizontal.svg);
+      mask-image: url(../../assets/img/boxes-horizontal.svg);
       -webkit-mask-repeat: repeat-y;
       mask-repeat: repeat-y;
     }

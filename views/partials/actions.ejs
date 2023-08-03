@@ -1,0 +1,9 @@
+<div class="actions">
+  <% if (type === "track") { %>
+    <button class="button button--action" data-action="play"><%- include('../icons/play.svg') %></button>
+  <% } %>
+  <% if (type === "track" || type === "effect") { %>
+    <button class="button button--action" data-action="see-files"><%- include('../icons/gear.svg') %></button>
+  <% } %>
+  <button class="button button--action" data-action="delete"><%- include('../icons/trashcan.svg') %></button>
+</div>

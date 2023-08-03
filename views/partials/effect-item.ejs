@@ -1,8 +1,9 @@
 <div class="track__inner">
-  <div class="track-title__container">
-    <span class="track-title">Flames</span>
+  <div class="track__title-container">
+    <span class="track__title"><%= title %></span>
   </div>
   <div class="keystroke__container">
-    <button class="keystroke" data-action="play" title="No files added to this track yet">1</button>
+    <button class="keystroke" data-action="play" data-keystroke="<%= keystroke %>" title="No files added to this track yet"><%= keystroke %></button>
   </div>
+  <%- include('actions') %>
 </div>

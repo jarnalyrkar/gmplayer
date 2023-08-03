@@ -1,0 +1,33 @@
+.empty {
+  background-color: var(--primary-400-trans);
+  padding: .65rem;
+  width: 100%;
+  max-width: unset !important;
+  grid-column: 1 / -1;
+}
+
+.no-files {
+  & [data-action=play] {
+    opacity: 50%;
+    cursor: not-allowed;
+
+    &:hover,
+    &:active {
+      transform: unset;
+      background-color: var(--primary-500);
+    }
+  }
+
+  & [data-action=see-files] {
+    animation: pulse 1s infinite alternate linear;
+  }
+}
+
+@keyframes pulse {
+  from {
+    background-color: var(--primary-500);
+  }
+  to {
+    background-color: var(--primary-300);
+  }
+}

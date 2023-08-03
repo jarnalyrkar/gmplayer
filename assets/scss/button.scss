@@ -11,6 +11,12 @@
   justify-content: space-between;
   font-size: inherit;
   gap: .25rem;
+  &:hover {
+    background-color: var(--primary-100);
+  }
+  &:active {
+    transform: rotate(5deg);
+  }
   &--action {
     width: 2.5rem;
     height: 2.5rem;

@@ -1,21 +1,31 @@
-body {
-  margin: unset;
-}
-
 * {
   font-family: var(--font);
   box-sizing: border-box;
   color: var(--accent);
 }
 
-ul {
-  padding: unset;
-  margin: 0;
-  list-style: none;
-}
-
 html {
   font-size: 18px;
+}
+
+body {
+  margin: unset;
+}
+
+h1,h2,h3,h4 {
+  margin-top: unset;
+  margin-bottom: unset;
+}
+
+h2 {
+  margin-bottom: 1rem;
+}
+
+ul {
+  list-style: none;
+  padding-left: unset;
+  margin-top: unset;
+  margin-bottom: unset;
 }
 
 svg {
@@ -34,8 +44,26 @@ fieldset {
   padding: unset;
 }
 
-::placeholder {
-  color: var(--primary-100);
+input {
+  font-size: 1rem;
+  color: inherit;
+}
+
+input[type=file] {
+  display: none;
+}
+
+input[type=button],
+button {
+  cursor: pointer;
+}
+
+input[type=file] + label {
+  background-color: var(--primary-600);
+  color: var(--accent);
+  padding: .25rem 1rem;
+  cursor: pointer;
+  width: 100%;
 }
 
 input[type=text] {
@@ -45,4 +73,14 @@ input[type=text] {
   outline: none;
   padding: .5rem 1rem;
   flex: 1;
+}
+
+textarea {
+  max-width: 100%;
+  font-size: 1.25rem;
+  resize: none;
+}
+
+::placeholder {
+  color: var(--primary-100);
 }

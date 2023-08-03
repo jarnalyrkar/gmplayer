@@ -1,0 +1,29 @@
+<svg
+   width="13.229166mm"
+   height="26.458334mm"
+   viewBox="0 0 13.229166 26.458334"
+   version="1.1"
+   id="boxes-vertical"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs2" />
+  <g
+     id="layer1"
+     transform="translate(-0.89938187,-15.248707)">
+    <rect
+       style="fill:#ffffff;fill-opacity:1;stroke:currentColor;stroke-width:0.237482;stroke-linecap:round;stroke-opacity:1"
+       id="rect479-6"
+       width="11.762518"
+       height="11.762518"
+       x="1.7082098"
+       y="16.118971" />
+    <rect
+       style="fill:#ffffff;fill-opacity:1;stroke:currentColor;stroke-width:0.237482;stroke-linecap:round;stroke-opacity:1"
+       id="rect479-7"
+       width="11.762518"
+       height="11.762518"
+       x="1.7051059"
+       y="28.91889" />
+  </g>
+</svg>

@@ -1,7 +1,6 @@
 .volume-slider {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  align-items: center;
   & svg {
     width: 1.5rem;
     height: 1.5rem;
@@ -9,5 +8,53 @@
   &__bar {
     display: flex;
     gap: .5rem;
+    -webkit-appearance: none;
+    appearance: none;
+    border: unset;
+    position: relative;
+    z-index: 1;
+    padding: unset;
+    width: 100%;
+    background: var(--accent);
+    height: 7px;
+    border-radius: 12px;
+    cursor: pointer;
+    pointer-events: auto;
+    &::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      height: 1rem;
+      width: 0.5rem;
+      background: var(--accent);
+      border-radius: 12px;
+      transition: background .3s ease-in-out;
+      &:hover {
+        cursor: grab;
+      }
+    }
+
+    &::-moz-range-thumb {
+      border: none;
+      height: 1rem;
+      width: .5rem;
+      border-radius: 12px;
+      background: var(--accent);
+    }
+    &:-moz-focusring {
+      outline: 1px solid white;
+      outline-offset: -1px;
+    }
+
+    &::-webkit-slider-runnable-track,
+    &::-moz-range-track {
+      appearance: none;
+      box-shadow: none;
+      border: none;
+      background: var(--accent);
+    }
+  }
+  &__background {
+    width: 100%;
+    padding-inline: 1rem;
   }
 }

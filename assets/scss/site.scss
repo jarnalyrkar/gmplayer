@@ -1,9 +1,14 @@
-@use './root' as *;
-@use './defaults' as *;
-@use './layout' as *;
-@use './button' as *;
-@use './volume-slider' as *;
-@use './list' as *;
+@use './root';
+@use './defaults';
+@use './layout';
+@use './button';
+@use './list';
+@use './volume-slider';
+@use './theme';
+@use './track';
+@use './effect';
+@use './files';
+@use './states';
 
 body {
   background-color: var(--primary-600);
