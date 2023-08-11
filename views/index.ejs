@@ -2,7 +2,12 @@
 <html>
   <head>
     <meta charset="UTF-8" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://taufik-nurrohman.js.org/color-picker/index.min.css">
     <link rel="stylesheet" href="../dist/css/site.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=<%= font %>&display=swap" rel="stylesheet">
     <title>Game Master Player</title>
   </head>
   <body>
@@ -15,20 +20,21 @@
           Themes
         </button>
         <%- include('./partials/list-header', {'type': 'theme', 'placeholder': "E.g The Flamespike Citadel"}) %>
-        <%- include('./partials/list', {'type': 'theme', 'list': [{'id': 1, 'title': 'My theme'}, {'id': 2, 'title': "Another theme"}]}) %>
+        <%- include('./partials/list', {'type': 'theme', 'list': init_themes}) %>
+
       </section>
       <div class="theme-related">
         <section id="preset">
           <%- include('./partials/list-header', {'type': 'preset', 'placeholder': "E.g Tavern, Forest, Temple, Goblin Hideout"}) %>
-          <%- include('./partials/list', {'type': 'preset', 'list': [{'id': 1, 'title': 'Default'}, {'id': 2, 'title': "My Preset"}]}) %>
+          <%- include('./partials/list', {'type': 'preset', 'list': init_presets}) %>
         </section>
         <section id="track">
           <%- include('./partials/list-header', {'type': 'track', 'placeholder': "E.g Howling Wind, Bard Music, Crackling Fire"}) %>
-          <%- include('./partials/list', {'type': 'track', 'list': [{'id': 1, 'title': 'Howling Wind'}]}) %>
+          <%- include('./partials/list', {'type': 'track', 'list': init_music}) %>
         </section>
         <section id="effect">
           <%- include('./partials/list-header', {'type': 'effect', 'placeholder': "E.g War Cry, Weapon Hits, Fire Spell"}) %>
-          <%- include('./partials/list', {'type': 'effect', 'list': [{'id': 1, 'title': "Fireball"}]}) %>
+          <%- include('./partials/list', {'type': 'effect', 'list': init_effects}) %>
         </section>
       </div>
     </main>
@@ -46,7 +52,7 @@
           <%- include('./icons/info.svg') %>
         </button>
         <button class="button button--action" data-action="stop" aria-label="Stop" title="Stop">
-          <%- include('./icons/info.svg') %>
+          <%- include('./icons/stop.svg') %>
         </button>
       </div>
       <div class="app-footer__sliders">
@@ -61,7 +67,76 @@
         </div>
       </div>
     </footer>
+    <div class="templates">
+      <template id="item">
+        <li data-order="" draggable="true" data-id="" class="list__item">
+          <input data-action="select" type="button" value="">
+          <button class="button button--action" data-action="delete">
+            <%- include("./icons/trashcan.svg") %>
+          </button>
+        </li>
+      </template>
+      <template id="track-item">
+        <li class="list__item" data-order="" data-id="" draggable="true">
+          <div class="track__row">
+            <div class="track__info">
+              <span class="track__title"></span>
+              <div class="volume-slider">
+                <%- include("./icons/speaker.svg") %>
+                <div class="volume-slider__background">
+                  <input class="volume-slider__bar" type="range" min="0" max="100" value="75">
+                </div>
+              </div>
+            </div>
+          <%- include('./partials/actions', {type: 'track'}) %>
+        </div>
+      </li>
+      </template>
+      <template id="track-files">
+        <div class="dialog" class="track-dialog">
+          <div class="dialog__outer">
+            <div class="dialog__inner">
+              <button data-action="close-dialog" aria-label="close dialog" title="Close settings">&times;</button>
+              <button id="new-track-file" class="button">Add file(s) to track</button>
+              <div class="dialog__files">
+                <h2>Files in track:</h2>
+                <ul class="files"></ul>
+                <template id="file">
+                  <li class="files__file" data-filename="" data-id="">
+                    <span class="file__name">filename</span>
+                    <button class="button button--action" data-action="delete-file" title="Delete">
+                      <%- include("./icons/trashcan.svg") %>
+                    </button>
+                  </li>
+                </template>
+              </div>
+            </div>
+          </div>
+        </div>
+      </template>
+      <template id="effect-item">
+        <li draggable="true" data-order="" data-id="" data-keystroke="">
+          <div class="track__inner">
+            <div class="track-title__container">
+              <span class="track-title"></span>
+            </div>
+            <div class="keystroke__container">
+              <button class="keystroke" data-action="play"></button>
+            </div>
+            <div class="play-actions">
+              <button class="action-button" data-action="see-files">
+                <%- include("./icons/gear.svg") %>
+              </button>
+              <button class="action-button" data-action="delete">
+                <%- include("./icons/trashcan.svg") %>
+              </button>
+            </div>
+          </div>
+        </li>
+      </template>
+    </div>
   </body>
+  <script src="https://taufik-nurrohman.js.org/color-picker/index.min.js"></script>
   <script src="../renderer.js"></script>
   <script src="../dist/js/site.js"></script>
 </html>

@@ -1,0 +1,52 @@
+{
+  "author": "Taufik Nurrohman",
+  "browser": "index.min.js",
+  "bugs": "https://github.com/taufik-nurrohman/color-picker/issues",
+  "dependencies": {
+    "@taufik-nurrohman/document": "*",
+    "@taufik-nurrohman/event": "*",
+    "@taufik-nurrohman/from": "*",
+    "@taufik-nurrohman/has": "*",
+    "@taufik-nurrohman/hook": "*",
+    "@taufik-nurrohman/is": "*",
+    "@taufik-nurrohman/pattern": "*",
+    "@taufik-nurrohman/rect": "*",
+    "@taufik-nurrohman/to": "*"
+  },
+  "description": "A simple color picker application written in pure JavaScript, for modern browsers.",
+  "devDependencies": {
+    "@taufik-nurrohman/factory": "*"
+  },
+  "exports": {
+    "import": "./index.mjs",
+    "require": "./index.js"
+  },
+  "files": [
+    "index.css",
+    "index.min.css",
+    "index.scss",
+    "index.js",
+    "index.min.js",
+    "index.mjs"
+  ],
+  "funding": {
+    "url": "https://paypal.me/tatautaufik"
+  },
+  "homepage": "https://taufik-nurrohman.js.org/color-picker",
+  "keywords": [
+    "color",
+    "picker"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "module": "index.mjs",
+  "name": "@taufik-nurrohman/color-picker",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/taufik-nurrohman/color-picker.git"
+  },
+  "scripts": {
+    "pack": "pack --clean=false --from=.github/factory --js-format=umd --js-name=CP --js-top='%(js.license)' --mjs=true --scss=true --to=."
+  },
+  "version": "2.4.4"
+}

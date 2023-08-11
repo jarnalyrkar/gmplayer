@@ -1,0 +1,51 @@
+extends ../_index.pug
+
+block state
+  - const scripts = ['../index.min.js']
+  - const styles = ['../index.min.css']
+  - const title = 'Color Picker'
+
+block style
+  style
+    | h1 input,
+    | h2 input,
+    | h3 input,
+    | h4 input,
+    | h5 input,
+    | h6 input {
+    |   font-size: 100%;
+    | }
+
+block script
+  script
+    | let parents = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+    |
+    | for (let i = 0, j = parents.length; i < j; ++i) {
+    |     (parent => {
+    |         let picker = new CP(parent.querySelector('input'));
+    |         picker.on('change', (r, g, b, a) => {
+    |             let value = picker.color(r, g, b, a);
+    |             picker.source.value = value;
+    |             picker.source.parentNode.style.color = value;
+    |         });
+    |         picker.on('focus', () => {
+    |             picker.enter(picker.source.parentNode);
+    |         });
+    |     })(parents[i]);
+    | }
+
+block content
+  main
+    each i in [1, 2, 3, 4, 5, 6]
+      #{'h' + i}!= 'Size ' + i + ': <input type="text">'
+    p By default, color picker size will follow the container&rsquo;s text size; the container that bounds to the color picker panel.
+    pre: code
+      | /* To change the color picker size */
+      | .color-picker__controls {
+      |   font-size: 20px;
+      | }
+      |
+      | /* To change the color picker cursor&rsquo;s size */
+      | .color-picker__cursor {
+      |   font-size: 20px;
+      | }

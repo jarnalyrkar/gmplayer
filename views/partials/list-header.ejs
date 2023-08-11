@@ -1,9 +1,11 @@
 <header>
   <h2>Add <%= type %></h2>
-  <fieldset class="create-inputs">
-    <input type="text" id="new-<%= type %>" placeholder="<%= placeholder %>">
-    <button class="button button--action" data-action="add">
-      <%- include('../icons/plus.svg') %>
-    </button>
-  </fieldset>
+  <form class="add-form">
+    <fieldset class="create-inputs">
+      <input type="text" id="new-<%= type %>" placeholder="<%= placeholder %>">
+      <button class="button button--action" data-action="add">
+        <%- include('../icons/plus.svg') %>
+      </button>
+    </fieldset>
+  </form>
 </header>

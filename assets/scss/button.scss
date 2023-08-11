@@ -24,6 +24,10 @@
     & svg {
       padding: .33rem;
     }
+    &.active {
+      background-color: var(--accent);
+      color: var(--primary-300);
+    }
   }
   & .arrow {
     transform: rotateY(0);

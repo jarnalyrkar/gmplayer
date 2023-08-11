@@ -1,0 +1,34 @@
+extends ../_index.pug
+
+block state
+  - const scripts = ['../index.min.js']
+  - const styles = ['../index.min.css']
+  - const title = 'Color Picker'
+
+block style
+  style
+    | .color-picker__dialog--no-alpha .color-picker__control--a {
+    |   display: none;
+    | }
+
+block script
+  script
+    | function disableAlphaControl(picker) {
+    |     if (picker.noAlpha) {
+    |         return;
+    |     }
+    |     picker.noAlpha = true;
+    |     picker.self.classList.add(picker.state.class + '__dialog--no-alpha');
+    |     picker.on('change', function (r, g, b) {
+    |         this.source.value = this.color(r, g, b, 1);
+    |     });
+    | }
+    |
+    | const picker = new CP(document.querySelector('input'));
+    |
+    | disableAlphaControl(picker);
+
+block content
+  main
+    p Disable alpha channel support with CSS.
+    p: input(type='text' value='#ff0')

@@ -4,21 +4,40 @@
     let index = 0
     %>
     <% list.forEach(function(item) { %>
-      <li class="list__item" data-order="<%= item.order %>" data-id="<%= item.id %>" draggable="true"
+
+      <%
+        let id = null
+        switch (type) {
+          case "theme":
+            id = item.theme_id
+            break
+          case "preset":
+            id = item.preset_id
+            break
+          default:
+            id = item.track_id
+        }
+      %>
+      <li class="list__item" data-order="<%= item.order %>" data-id="<%= id %>" draggable="true"
         <% if (type === 'theme' || type === 'preset') { %>
-            <%= (item.id === last_active_theme && type === 'theme' ||
-                item.id === last_active_preset && type === 'preset') ? " data-state=\"selected\"" : '' %>
+            <% if (id == init_theme  && type === 'theme') { %>
+              data-state="selected"
+            <% }
+            if (id == init_preset && type === 'preset') { %>
+              data-state="selected"
+            <% } %>
         <% } %>
       >
+
         <% if (type === 'theme' || type === 'preset') { %>
-          <input data-action="select" type="button" value="<%= item.title %>">
+          <input data-action="select" type="button" value="<%= item.name %>">
           <%- include('actions') %>
         <% } %>
         <% if (type === "track") { %>
-          <%- include('track-item', {'title': item.title}) %>
+          <%- include('track-item', {'title': item.name}) %>
         <% } %>
         <% if (type === "effect") { %>
-          <%- include('effect-item', {'title': item.title, 'keystroke': keystrokes[index]}) %>
+          <%- include('effect-item', {'title': item.name, 'keystroke': keystrokes[index]}) %>
           <% index++ %>
         <% } %>
 
