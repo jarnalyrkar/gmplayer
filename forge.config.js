@@ -10,6 +10,7 @@ module.exports = {
       name: '@electron-forge/maker-deb',
     }, {
       name: '@electron-forge/maker-wix',
+      icon: './icon.ico'
     }, {
       name: '@electron-forge/maker-zip'
     }, {
