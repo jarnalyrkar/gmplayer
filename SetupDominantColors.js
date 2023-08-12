@@ -2,10 +2,9 @@ const download = require('image-downloader')
 const path = require('path')
 const ColorThief = require('colorthief')
 const DB = require('./db/DB')
-const db = new DB()
 const fs = require('fs')
 
-function setup_dominant_colors(url) {
+function setup_dominant_colors(db, url) {
   const options = {
     url: url,
     dest: path.join(__dirname, '/temp/')

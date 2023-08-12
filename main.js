@@ -3,7 +3,14 @@ const ejse = require('ejs-electron')
 const path = require('path')
 const url = require('url')
 const DB = require('./db/DB')
-const db = new DB();
+
+let db_path = "./gmplayer.db"
+if (app.isPackaged) {
+  db_path = process.resourcesPath + "/gmplayer.db"
+}
+
+const db = new DB(db_path);
+
 const setup_dominant_colors = require('./SetupDominantColors')
 
 let mainWindow
@@ -153,5 +160,5 @@ ipcMain.handle('settings:set_accent_color', (event, color) => {return db.setting
 ipcMain.handle('settings:set_text_color', (event, color) => {return db.settings.set_text_color(color)});
 ipcMain.handle('settings:get_shades', (event, color) => {return db.settings.get_shades()});
 ipcMain.handle('settings:HSLToRGB', (event, color) => {return db.settings.HSLToRGB()});
-ipcMain.handle('settings:set_dominant_colors', (event, url) => { return setup_dominant_colors(url)});
+ipcMain.handle('settings:set_dominant_colors', (event, url) => { return setup_dominant_colors(db_path, url)});
 
