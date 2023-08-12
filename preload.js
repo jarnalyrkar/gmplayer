@@ -81,4 +81,6 @@ contextBridge.exposeInMainWorld('settings', {
   set_accent_color: (color) => {return ipcRenderer.invoke('settings:set_accent_color', color)},
   set_primary_color: (color) => {return ipcRenderer.invoke('settings:set_primary_color', color)},
   get_shades: () => {return ipcRenderer.invoke('settings:get_shades')},
+  HSLToRGB: () => {return ipcRenderer.invoke('settings:HSLToRGB')},
+  set_dominant_colors: (url) => {return ipcRenderer.invoke('settings:set_dominant_colors', url)},
 })

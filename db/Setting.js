@@ -1,3 +1,5 @@
+const ColorThief = require('colorthief')
+
 class Setting {
 
   constructor(db) {
@@ -22,9 +24,9 @@ class Setting {
   }
 
   reset_ui_colors() {
-    set_primary_color(this.default_colors.primary)
-    set_accent_color(this.default_colors.accent)
-    set_text_color(this.default_colors.text)
+    this.set_primary_color(this.default_colors.primary)
+    this.set_accent_color(this.default_colors.accent)
+    this.set_text_color(this.default_colors.text)
   }
 
   get_active_theme() {

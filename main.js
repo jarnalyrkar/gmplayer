@@ -1,10 +1,13 @@
 const { app, BrowserWindow, ipcMain, dialog, protocol } = require('electron')
 const ejse = require('ejs-electron')
 const path = require('path')
+const url = require('url')
 const DB = require('./db/DB')
 const db = new DB();
+const setup_dominant_colors = require('./SetupDominantColors')
 
 let mainWindow
+
 
 app.whenReady().then(() => {
   mainWindow = new BrowserWindow({
@@ -12,12 +15,16 @@ app.whenReady().then(() => {
       nodeIntegration: false,
       contextIsolation: true,
       preload: path.join(__dirname, 'preload.js')
-    }
+    },
+    icon: './logo.png',
   })
-  mainWindow.loadURL('file://' + __dirname + '/views/index.ejs')
-
+  mainWindow.loadURL(url.format({
+    pathname: path.join(__dirname, "views/index.ejs"),
+    protocol: "file:",
+    slashes: true
+  }))
+  mainWindow.maximize()
   const protocolName = 'load-audio'
-
   protocol.registerFileProtocol(protocolName, (request, callback) => {
     const url = request.url.replace(`${protocolName}://`, '')
     try {
@@ -34,12 +41,17 @@ app.whenReady().then(() => {
 // Initial data for templates
 const init_theme = db.settings.get_active_theme()
 ejse.data('font', db.settings.get_font())
-ejse.data('init_themes', db.themes.list())
-ejse.data('init_theme', init_theme)
-ejse.data('init_presets', db.presets.get_by_theme(init_theme))
-ejse.data('init_preset', db.presets.get_active_in_theme(init_theme))
-ejse.data('init_music', db.tracks.get_music_by_theme(init_theme))
-ejse.data('init_effects', db.tracks.get_effects_by_theme(init_theme))
+ejse.data('primary_color', db.settings.HSLToRGB(db.settings.get_primary_color()))
+ejse.data('accent_color', db.settings.HSLToRGB(db.settings.get_accent_color()))
+ejse.data('accent_color_raw', db.settings.get_accent_color())
+ejse.data('background_image', db.settings.get_background_image())
+ejse.data('shades', db.settings.get_shades())
+ejse.data('init_theme', db.themes.get(init_theme).theme_id)
+ejse.data('init_themes', ejse.data('init_theme') ? db.themes.list() : [])
+ejse.data('init_presets', ejse.data('init_theme') ? db.presets.get_by_theme(init_theme) : [])
+ejse.data('init_preset', ejse.data('init_theme') ? db.presets.get_active_in_theme(init_theme) : [])
+ejse.data('init_music', ejse.data('init_theme') ? db.tracks.get_music_by_theme(init_theme) : [])
+ejse.data('init_effects', ejse.data('init_theme') ? db.tracks.get_effects_by_theme(init_theme) : [])
 
 // IPC handlers
 ipcMain.on('open-dialog', (event) => {
@@ -140,4 +152,6 @@ ipcMain.handle('settings:set_primary_color', (event, color) => {return db.settin
 ipcMain.handle('settings:set_accent_color', (event, color) => {return db.settings.set_accent_color(color)});
 ipcMain.handle('settings:set_text_color', (event, color) => {return db.settings.set_text_color(color)});
 ipcMain.handle('settings:get_shades', (event, color) => {return db.settings.get_shades()});
+ipcMain.handle('settings:HSLToRGB', (event, color) => {return db.settings.HSLToRGB()});
+ipcMain.handle('settings:set_dominant_colors', (event, url) => { return setup_dominant_colors(url)});
 

@@ -49,7 +49,7 @@ section:not(#effect) .list__item + .list__item {
       width: 15px;
       display: block;
       cursor: move;
-      background-color: var(--primary-600-trans);
+      background-color: var(--accent-trans);
       filter: brightness(2);
       -webkit-mask-size: 100%;
       mask-size: 100%;

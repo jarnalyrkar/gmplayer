@@ -9,16 +9,35 @@
     <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=<%= font %>&display=swap" rel="stylesheet">
     <title>Game Master Player</title>
+    <%
+      let lastIndex = accent_color_raw.lastIndexOf(')')
+      let accent_color_trans = [accent_color_raw.slice(0,lastIndex), ', 70%', accent_color_raw.slice(lastIndex)].join('')
+    %>
+    <style>
+      :root {
+        --primary-100: <%= shades[0] %>;
+        --primary-200: <%= shades[1] %>;
+        --primary-300: <%= shades[2] %>;
+        --primary-400: <%= shades[3] %>;
+        --primary-400-trans: <%= shades[4] %>;
+        --primary-500: <%= shades[5] %>;
+        --primary-600: <%= shades[6] %>;
+        --primary-600-trans: <%= shades[7] %>;
+        --accent: <%= accent_color_raw %>;
+        --accent-trans: <%= accent_color_trans %>;
+        --font: "<%= font.replace(" +", ' ') %>";
+      }
+    </style>
   </head>
-  <body>
+  <body style="background-image: url(<%= background_image %>)"` %>>
     <div class="blurred-underlay"></div>
     <div class="header-bg"></div>
     <main>
+      <button class="button" data-action="themes-toggle">
+        <span class="arrow"><%- include('./icons/arrow.svg') %></span>
+        Themes
+      </button>
       <section id="theme">
-        <button class="button" data-action="themes-toggle">
-          <span class="arrow"><%- include('./icons/arrow.svg') %></span>
-          Themes
-        </button>
         <%- include('./partials/list-header', {'type': 'theme', 'placeholder': "E.g The Flamespike Citadel"}) %>
         <%- include('./partials/list', {'type': 'theme', 'list': init_themes}) %>
 
@@ -39,9 +58,9 @@
       </div>
     </main>
     <aside>
-      <div id="infobox" class="dialog"></div>
-      <div id="toast" class="toast"></div>
-      <div id="settings" class="dialog"></div>
+      <div id="infobox" class="dialog"><%- include('./partials/infobox') %></div>
+      <div id="toast" class="toast"><%- include('./partials/toast') %></div>
+      <div id="settings" class="dialog"><%- include('./partials/settings') %></div>
     </aside>
     <footer class="app-footer">
       <div class="app-footer__buttons">
@@ -61,7 +80,7 @@
           <div class="volume-slider">
             <%- include("./icons/speaker.svg") %>
             <div class="volume-slider__background">
-              <input class="volume-slider__bar" type="range" min="0" max="100" value="75">
+              <input id="main-effects-volume" class="volume-slider__bar" type="range" min="0" max="100" value="75">
             </div>
           </div>
         </div>
@@ -115,28 +134,22 @@
         </div>
       </template>
       <template id="effect-item">
-        <li draggable="true" data-order="" data-id="" data-keystroke="">
+        <li class="list__item no-files" data-order="" data-id="" draggable="true">
           <div class="track__inner">
-            <div class="track-title__container">
-              <span class="track-title"></span>
+            <div class="track__title-container">
+              <span class="track__title"></span>
             </div>
             <div class="keystroke__container">
-              <button class="keystroke" data-action="play"></button>
+              <button class="keystroke" data-action="play" data-keystroke=""></button>
             </div>
-            <div class="play-actions">
-              <button class="action-button" data-action="see-files">
-                <%- include("./icons/gear.svg") %>
-              </button>
-              <button class="action-button" data-action="delete">
-                <%- include("./icons/trashcan.svg") %>
-              </button>
-            </div>
+            <%- include('./partials/actions', {type: 'effect'}) %>
           </div>
         </li>
       </template>
     </div>
   </body>
   <script src="https://taufik-nurrohman.js.org/color-picker/index.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
   <script src="../renderer.js"></script>
   <script src="../dist/js/site.js"></script>
 </html>

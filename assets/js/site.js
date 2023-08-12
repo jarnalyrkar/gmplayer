@@ -16,7 +16,7 @@ function setListHeight() {
   // get footer height
   const footerHeight = document.querySelector('footer').clientHeight
   const margin = parseFloat(window.getComputedStyle(header)['marginBottom']) +
-                parseFloat(window.getComputedStyle(header)['marginTop'])
+    parseFloat(window.getComputedStyle(header)['marginTop'])
   const taken = headerHeight + footerHeight + margin
   document.querySelectorAll('.list').forEach(list => {
     list.style.maxHeight = `calc(100vh - ${taken}px)`
@@ -25,11 +25,11 @@ function setListHeight() {
 }
 
 function removeTags(str) {
-    if ((str===null) || (str===''))
-        return false;
-    else
-        str = str.toString();
-    return str.replace( /(<([^>]+)>)/ig, '');
+  if ((str === null) || (str === ''))
+    return false;
+  else
+    str = str.toString();
+  return str.replace(/(<([^>]+)>)/ig, '');
 }
 
 function showToast(message) {
@@ -83,13 +83,11 @@ function activateElement(id, list) {
 }
 
 function fadeOut(audio) {
-  console.log("Fading out")
   const steps = 0.05
   const interval = 50
-  targetVolume = 0
+  const targetVolume = 0
   console.log(audio.volume)
   let fadeout = setInterval(() => {
-    console.log(audio.volume)
     if (audio.volume.toFixed(2) > targetVolume + steps) {
       audio.volume -= steps
     } else {
@@ -152,8 +150,8 @@ function fadeTo(audio, targetVolume) {
   }
 }
 
-function playEffect(id) {
-  let audio = createAudio(id)
+async function playEffect(id) {
+  let audio = await createAudio(id)
   if (audio) {
     audio.play()
     audio.addEventListener('ended', () => {
@@ -174,7 +172,7 @@ function getDataByTheme(id) {
 function setPresets(theme_id) {
   const parent = document.querySelector('#preset .list')
   parent.innerHTML = ""
-  // loadJson(`/api/preset/get.php?id=${theme_id}`)
+
   presets.get_by_theme(theme_id).then(data => {
     if (data.length > 0) {
       data.forEach(item => {
@@ -210,7 +208,8 @@ function setTracks(theme_id) {
         li.setAttribute('data-order', item.order)
         li.querySelector('[data-action=play]').classList.add('active')
         // loadJson(`/api/preset/track-settings.php?preset_id=${preset_id}&track_id=${item.track_id}`)
-        preset.get_settings_by_track(preset_id, track_id).then(data => {
+        window.presets.get_settings_for_track(preset_id, item.track_id).then(data => {
+          if (!data) return
           const range = li.querySelector('input[type=range]')
           range.value = data.volume
           const existing = document.querySelector(`audio[data-id="${track.getAttribute('data-id')}"]`)
@@ -236,7 +235,7 @@ function setTracks(theme_id) {
           }
 
         })
-        li.querySelector('.track-title').innerHTML = item.name
+        li.querySelector('.track__title').innerHTML = item.name
         parent.appendChild(clone)
       })
     } else {
@@ -259,8 +258,8 @@ function setEffects(theme_id) {
         const keystroke = keystrokes[parent.querySelectorAll('li:not(.empty)').length + counter]
         li.setAttribute('data-id', item.track_id)
         li.setAttribute('data-order', item.order)
-        li.querySelector('.track-title').innerHTML = item.name
-        li.setAttribute('data-keystroke', keystroke)
+        li.querySelector('.track__title').innerHTML = item.name
+        li.querySelector('.keystroke').setAttribute('data-keystroke', keystroke)
         li.querySelector('.keystroke').innerHTML = keystroke
         parent.appendChild(clone)
         counter++;
@@ -291,7 +290,7 @@ function saveNewOrder(target) {
       if (parseInt(items[i - 1].getAttribute('data-order')) === i) continue
       const id = items[i - 1].getAttribute('data-id')
       items[i - 1].setAttribute('data-order', i)
-      presets.update_order(id, theme_id, i)
+      presets.set_order_in_theme(id, theme_id, i)
       // loadJson(`/api/preset/update-order.php?preset_id=${id}&theme_id=${theme_id}&order=${i}`)
     }
   } else if (data_type === "track" || data_type === "effect") {
@@ -347,7 +346,7 @@ function createTheme(name, list) {
   } else {
     order = list.children.length + 1
   }
-  themes.create(name, order).then(({theme_id}) => {
+  themes.create(name, order).then(({ theme_id }) => {
     const template = document.querySelector('#item')
     const clone = template.content.cloneNode(true)
     const li = clone.querySelector('.list__item')
@@ -373,7 +372,7 @@ function createPreset(name, theme_id, list) {
   if (selectedTheme) {
     selectedThemeId = selectedTheme.getAttribute('data-id')
   }
-  if (name === "Default") {
+  if (list.querySelector('.empty')) {
     current = 1
   }
   let order
@@ -390,11 +389,11 @@ function createPreset(name, theme_id, list) {
   }
 
   // loadJson(`/api/preset/create.php?name=${name}&theme_id=${theme_id}&order=${order}&current=${current}`)
-  presets.create(name, theme_id, order, current)
-  .then(id => {
+  presets.create(name, theme_id, order, current).then(data => {
     if (parseInt(theme_id) !== parseInt(selectedThemeId)) {
       return
     }
+    const id = data.preset_id
     const template = document.querySelector('#item')
     const clone = template.content.cloneNode(true)
     const li = clone.querySelector('.list__item')
@@ -403,6 +402,7 @@ function createPreset(name, theme_id, list) {
     clone.querySelector('.list__item input[type=button]').value = name
     list.append(clone)
     if (current) {
+      console.log(id, theme_id)
       presets.set_active_in_theme(id, theme_id)
       // loadJson(`/api/preset/set-last.php?preset_id=${id}&theme_id=${theme_id}`)
     }
@@ -448,24 +448,21 @@ function createEffect(value, theme_id, list) {
   } else {
     order = list.children.length + 1
   }
-  console.log(value, theme_id, list)
   if (!theme_id) {
     showToast("Please create a theme before adding an effect")
     return
   }
   // loadJson(`/api/track/create.php?name=${value}&theme_id=${theme_id}&type_id=2&order=${order}`)
   tracks.create(value, theme_id, 2, order).then((effect) => {
-    console.log(effect)
     const template = document.querySelector('#effect-item')
-    console.log(template)
     const clone = template.content.cloneNode(true)
     const li = clone.querySelector('li')
     li.setAttribute('data-id', effect.track_id)
-    li.querySelector('.track-title').innerHTML = value
-    list.append(clone)
-    const keystroke = keystrokes[list.querySelectorAll('li:not(.empty)').length - 1]
-    li.setAttribute('data-keystroke', keystroke)
+    li.querySelector('.track__title').innerHTML = value
+    const keystroke = keystrokes[list.querySelectorAll('li:not(.empty)').length]
     li.querySelector('.keystroke').innerHTML = keystroke
+    li.querySelector('.keystroke').setAttribute('data-keystroke', keystroke)
+    list.append(clone)
     tagTracksWithoutFiles()
     const empty = list.querySelector('.empty')
     if (empty) empty.remove()
@@ -477,7 +474,6 @@ function isMusic(id) {
 }
 
 async function createAudio(id) {
-  console.log(id)
   const audio = await window.files.random_in_track(parseInt(id))
   if (audio) {
     let el = document.createElement('audio')
@@ -487,7 +483,7 @@ async function createAudio(id) {
 
     // Play effect
     if (!isMusic(id)) {
-      el.volume = document.querySelector('[id=main-effects-volume]').value / 100
+      el.volume = document.querySelector('.effect-volume .volume-slider__bar').value / 100
       el.setAttribute('data-type', 'effect')
       el.play()
     }
@@ -527,7 +523,6 @@ document.addEventListener('click', (ev) => {
     const section = ev.target.closest("section")
     const list = section.querySelector('.list')
     activateElement(preset_id, list)
-
     if (section.id === "preset") {
       getTrackSettings(preset_id)
     }
@@ -585,7 +580,7 @@ document.addEventListener('click', (ev) => {
       }
       activateElement(available.getAttribute('data-id'), list)
       tagTracksWithoutFiles()
-    } else if(list.children.length === 0) {
+    } else if (list.children.length === 0) {
       list.innerHTML = `<li class="empty">No ${type}s added yet!</li>`
     }
     // loadJson(`/api/${type}/delete.php?id=${id}`)
@@ -612,15 +607,15 @@ document.addEventListener('click', (ev) => {
     // loadJson(`/api/file/get.php?track_id=${track_id}`)
     files.get_by_track(track_id).then(files => {
       if (files.length > 0) {
-      files.forEach(file => {
-        const template = dialog.querySelector('#file')
-        const clone = template.content.cloneNode(true)
-        const li = clone.querySelector('li')
-        li.setAttribute('data-id', file.file_id)
-        li.setAttribute('data-filename', file.filename)
-        li.querySelector('.file__name').innerHTML = file.filename
-        dialog.querySelector('.files').appendChild(clone)
-      })
+        files.forEach(file => {
+          const template = dialog.querySelector('#file')
+          const clone = template.content.cloneNode(true)
+          const li = clone.querySelector('li')
+          li.setAttribute('data-id', file.file_id)
+          li.setAttribute('data-filename', file.filename)
+          li.querySelector('.file__name').innerHTML = file.filename
+          dialog.querySelector('.files').appendChild(clone)
+        })
       } else {
         dialog.querySelector('.files').insertAdjacentHTML('afterbegin', '<li class="empty">No files yet</li>')
       }
@@ -659,7 +654,6 @@ document.addEventListener('click', (ev) => {
     const li = ev.target.closest('li')
     if (li.classList.contains('no-files')) return
     const id = li.getAttribute('data-id')
-    console.log(li, li.getAttribute('data-id'))
     const existingAudio = document.querySelector(`audio[data-id="${id}"]`)
     const volumeBar = li.querySelector('input[type=range]')
     ev.target.classList.toggle('active')
@@ -677,16 +671,21 @@ document.addEventListener('click', (ev) => {
         }
         return
       } else {
-      createAudio(id).then(audio => {
-        if (audio) {
-          fadeIn(audio, targetVolume)
-          return
-        }
-      })
+        createAudio(id).then(audio => {
+          if (audio) {
+            fadeIn(audio, targetVolume)
+            return
+          }
+        })
+      }
+    } else { // Effect
+      li.querySelector('.keystroke').classList.add('flash')
+      // createAudio(id)
+      playEffect(id)
+      let flash = setTimeout(() => {
+        li.querySelector('.keystroke').classList.remove('flash')
+      }, 750)
     }
-  } else { // Effect
-    createAudio(id)
-  }
   }
 
   if (ev.target.getAttribute('data-action') === 'delete-file') {
@@ -721,11 +720,11 @@ document.addEventListener('click', (ev) => {
     document.querySelector('#infobox').classList.add('dialog--show')
   }
 
-  if (ev.target.getAttribute('data-action') === 'toggle-themes') {
+  if (ev.target.getAttribute('data-action') === 'themes-toggle') {
     const theme = document.querySelector('#theme')
     let transform = theme_width // inline padding + gap
-    const mainColor = root.style.getPropertyValue('--primary-400')
-    const accentColor = root.style.getPropertyValue('--accent')
+    const mainColor = root.style.getPropertyValue('--primary-100')
+    const accentColor = root.style.getPropertyValue('--accent-trans')
     if (theme.style.width === "0px") {
       ev.target.querySelector('.arrow').style.transform = "rotateY(0)"
       ev.target.style.backgroundColor = mainColor
@@ -749,8 +748,27 @@ document.addEventListener('click', (ev) => {
 
   if (ev.target.getAttribute('data-action') === 'reset-theme') {
     // loadJson(`/api/settings/reset-theme.php`)
-    settings.reset_ui_colors().then(x => {
-      location.reload()
+
+    settings.reset_ui_colors().then(() => {
+
+      settings.get_primary_color().then(color => {
+        const primaryValues = color.substr(4).replace(")", "").replaceAll("%", '').split(', ')
+        root.style.setProperty('--primary-100', `hsl(${primaryValues[0]}, ${primaryValues[1]}%, ${parseFloat(primaryValues[2]) + 20}%)`)
+        root.style.setProperty('--primary-200', `hsl(${primaryValues[0]}, ${primaryValues[1]}%, ${parseFloat(primaryValues[2]) + 10}%)`)
+        root.style.setProperty('--primary-300', `hsl(${primaryValues[0]}, ${primaryValues[1]}%, ${parseFloat(primaryValues[2])}%)`)
+        root.style.setProperty('--primary-400', `hsl(${primaryValues[0]}, ${primaryValues[1]}%, ${parseFloat(primaryValues[2]) - 5}%)`)
+        root.style.setProperty('--primary-400-trans', `hsla(${primaryValues[0]}, ${primaryValues[1]}%, ${parseFloat(primaryValues[2]) - 5}%, 70%)`)
+        root.style.setProperty('--primary-500', `hsl(${primaryValues[0]}, ${primaryValues[1]}%, ${parseFloat(primaryValues[2]) - 10}%)`)
+        root.style.setProperty('--primary-600', `hsl(${primaryValues[0]}, ${primaryValues[1]}%, ${parseFloat(primaryValues[2]) - 15}%)`)
+        root.style.setProperty('--primary-600-trans', `hsla(${primaryValues[0]}, ${primaryValues[1]}%, ${parseFloat(primaryValues[2]) - 15}%, 70%)`)
+      })
+
+      settings.get_accent_color().then(color => {
+        console.log(color)
+        const primaryValues = color.substr(4).replace(")", "").replaceAll("%", '').split(', ')
+        root.style.setProperty('--accent', `hsl(${primaryValues[0]}, ${primaryValues[1]}%, ${primaryValues[2]}%)`)
+        root.style.setProperty('--accent-trans', `hsla(${primaryValues[0]}, ${primaryValues[1]}%, ${primaryValues[2]}%, 70%)`)
+      })
     })
   }
 
@@ -785,7 +803,7 @@ function getTrackSettings(preset_id) {
             if (audio) {
               if (data.playing && audio.playing) {
                 fadeTo(audio, data.volume)
-              } else if (data.playing && !audio.playing){
+              } else if (data.playing && !audio.playing) {
                 range.value = data.volume
                 fadeIn(audio, data.volume)
               } else {
@@ -811,19 +829,18 @@ function getTrackSettings(preset_id) {
         // Create preset_track connection
         // loadJson(`/api/preset/get-track.php?track_id=${track_id}&preset_id=${preset_id}`)
         presets.get_settings_for_track(track_id, preset_id)
-        .then(info => {
-          if (!info) {
-            if (track_id && preset_id) {
-              // loadJson(`/api/preset/add-track.php?track_id=${track_id}&preset_id=${preset_id}`)
-              tracks.add_track_to_preset(track_id, preset_id)
-              .then((settings) => {
-                // Recursive or infinite loop - who can tell?
-                console.log("Get settings for new track")
-                getTrackSettings(preset_id)
-              })
+          .then(info => {
+            if (!info) {
+              if (track_id && preset_id) {
+                // loadJson(`/api/preset/add-track.php?track_id=${track_id}&preset_id=${preset_id}`)
+                window.tracks.add_track_to_preset(track_id, preset_id)
+                  .then((settings) => {
+                    // Recursive or infinite loop - who can tell?
+                    getTrackSettings(preset_id)
+                  })
+              }
             }
-          }
-        })
+          })
       }
     })
   })
@@ -857,25 +874,32 @@ document.querySelectorAll('.add-form').forEach(form =>
       createTrack(value, theme_id, list)
     }
     if (type === "effect") {
-      console.log("CREATE EFFECT")
       createEffect(value, theme_id, list)
     }
     input.value = ""
   }
-))
+  ))
 
 document.addEventListener('keydown', ev => {
   const effects = document.querySelectorAll('#effect .list li:not(.empty)')
   const effectsLength = effects.length
   if (effectsLength > 0) {
     for (let i = 0; i < effectsLength; i++) {
-      if (ev.code === `Digit${i+1}` || ev.code === `Numpad${i+1}`) {
+      if (ev.code === `Digit${i + 1}` || ev.code === `Numpad${i + 1}`) {
         const id = effects[i].getAttribute('data-id')
+        effects[i].querySelector('.keystroke').classList.add('flash')
         playEffect(id)
+        let flash = setTimeout(() => {
+          effects[i].querySelector('.keystroke').classList.remove('flash')
+        }, 1000)
       }
       if (effects[i].getAttribute('data-keystroke') && ev.code === "Key" + effects[i].getAttribute('data-keystroke').toLocaleUpperCase()) {
         const id = effects[i].getAttribute('data-id')
+        effects[i].querySelector('.keystroke').classList.add('flash')
         playEffect(id)
+        let flash = setTimeout(() => {
+          effects[i].querySelector('.keystroke').classList.remove('flash')
+        }, 1000)
       }
     }
   }
@@ -890,12 +914,13 @@ document.addEventListener('keydown', ev => {
 
 // Volume handling
 document.addEventListener('change', ev => {
-  if (ev.target.classList.contains('track-volume')) {
+  if (ev.target.classList.contains('volume-slider__bar')) {
     const audioId = ev.target.closest('li').getAttribute('data-id')
     const audioElement = document.querySelector(`audio[data-id="${audioId}"]`)
     const presetId = document.querySelector('#preset [data-state=selected]').getAttribute('data-id')
     // loadJson(`/api/preset/update-volume.php?preset_id=${presetId}&track_id=${audioId}&volume=${ev.target.value}`)
     presets.set_track_volume(presetId, audioId, ev.target.value)
+
     if (audioElement) {
       fadeTo(audioElement, ev.target.value)
     }
@@ -945,7 +970,6 @@ document.addEventListener('dblclick', ev => {
     addEventListener('keydown', (pressed) => {
       if (pressed.key === "Enter") {
         // loadJson(`/api/${data_type}/update.php?id=${id}&new-name=${ev.target.value}`)
-        console.log(data_type, id, ev.target.value)
         ev.target.setAttribute('type', 'button')
       }
     })
@@ -990,12 +1014,12 @@ let index;
 let indexDrop;
 let list;
 
-document.addEventListener("dragstart", ({target}) => {
+document.addEventListener("dragstart", ({ target }) => {
   dragged = target;
   order = target.getAttribute('data-order');
   list = target.parentNode.children;
-  for(let i = 0; i < list.length; i += 1) {
-    if(list[i] === dragged){
+  for (let i = 0; i < list.length; i += 1) {
+    if (list[i] === dragged) {
       index = i;
     }
   }
@@ -1005,18 +1029,18 @@ document.addEventListener("dragover", (event) => {
   event.preventDefault();
 });
 
-document.addEventListener("drop", ({target}) => {
+document.addEventListener("drop", ({ target }) => {
   if (target.nodeName === "LI" && target.getAttribute('data-order') !== order) {
-    dragged.remove( dragged );
-    for(let i = 0; i < list.length; i += 1) {
-      if(list[i] === target){
+    dragged.remove(dragged);
+    for (let i = 0; i < list.length; i += 1) {
+      if (list[i] === target) {
         indexDrop = i;
       }
     }
-    if(index > indexDrop) {
-      target.before( dragged );
+    if (index > indexDrop) {
+      target.before(dragged);
     } else {
-      target.after( dragged );
+      target.after(dragged);
     }
     saveNewOrder(target)
   }
@@ -1038,7 +1062,7 @@ if (primaryEl) {
     primaryEl.nextElementSibling.value = value
     primaryEl.style.backgroundColor = value
     // Convert rgba to HSL, then this:
-    const primaryValues = RGBToHSL(r.toFixed(2),g.toFixed(2),b.toFixed(2))
+    const primaryValues = RGBToHSL(r.toFixed(2), g.toFixed(2), b.toFixed(2))
     root.style.setProperty('--primary-100', `hsl(${primaryValues[0]}, ${primaryValues[1]}%, ${primaryValues[2] + 20}%)`)
     root.style.setProperty('--primary-200', `hsl(${primaryValues[0]}, ${primaryValues[1]}%, ${primaryValues[2] + 10}%)`)
     root.style.setProperty('--primary-300', `hsl(${primaryValues[0]}, ${primaryValues[1]}%, ${primaryValues[2]}%)`)
@@ -1051,6 +1075,7 @@ if (primaryEl) {
   })
 
   primaryPicker.on('stop', () => {
+    console.log("Set primary color")
     // loadJson(`/api/settings/set-primary-color.php?color=${primaryHSL}`)
     settings.set_primary_color(primaryHSL)
   })
@@ -1059,67 +1084,52 @@ if (primaryEl) {
 const accentEl = document.querySelector('#accent-color')
 if (accentEl) {
   const accentPicker = new CP(accentEl)
-  let accentHSL;
-  accentPicker.on('drag', (r,g,b,a) => {
+  let accentHSL
+  let accentTransHSL
+  accentPicker.on('drag', (r, g, b, a) => {
     const value = `rgba(${r}, ${g}, ${b}, ${a.toFixed(2)})`
     accentEl.nextElementSibling.value = value
     accentEl.style.backgroundColor = value
     // Convert rgba to hsl, then this:
-    const accentValues = RGBToHSL(r,g,b)
+    const accentValues = RGBToHSL(r, g, b)
     accentHSL = `hsl(${accentValues[0].toFixed(2)}, ${accentValues[1].toFixed(2)}%, ${accentValues[2].toFixed(2)}%)`
+    accentTransHSL = `hsl(${accentValues[0].toFixed(2)}, ${accentValues[1].toFixed(2)}%, ${accentValues[2].toFixed(2)}%, 70%)`
     root.style.setProperty('--accent', accentHSL)
+    root.style.setProperty('--accent-trans', accentTransHSL)
   })
 
   accentPicker.on('stop', () => {
-    console.log(accentHSL)
     // loadJson(`/api/settings/set-accent-color.php?color=${accentHSL.toString()}`)
     settings.set_accent_color(accentHSL.toString())
   })
 }
 
-function hueShift(h,s) {
-  h+=s; while (h>=360.0) h-=360.0; while (h<0.0) h+=360.0; return h;
+function hueShift(h, s) {
+  h += s; while (h >= 360.0) h -= 360.0; while (h < 0.0) h += 360.0; return h;
 }
 
-function setColors() {
-  const colorThief = new ColorThief();
-  const img = new Image();
+async function setColors() {
+  let image_url = document.querySelector('#bg-img-url').value
 
-  img.addEventListener('load', function() {
-    colorThief.getColor(img);
-  });
+  settings.set_dominant_colors(image_url)
+  const primary = await settings.get_primary_color()
+  const accent = await settings.get_accent_color()
 
-  let imageURL = document.querySelector('#bg-img-url').value;
+  const primaryValues = primary.split(", ")
+  const lightValue = parseFloat(primaryValues[2])
 
-  if (!imageURL) return;
-  let googleProxyURL = 'https://images1-focus-opensocial.googleusercontent.com/gadgets/proxy?container=focus&refresh=2592000&url=';
-
-  img.crossOrigin = 'Anonymous';
-  img.src = googleProxyURL + encodeURIComponent(imageURL);
-
-  let imageLoader = setInterval(() => {
-    if (img.complete) {
-      const dominant = colorThief.getColor(img, 2)
-      const accent = colorThief.getPalette(img, 2)
-      const hsl = RGBToHSL(dominant[0], dominant[1], dominant[2])
-      if (hsl[2] <= 10) {
-        hsl[2] = 10
-      }
-      // loadJson(`/api/settings/set-primary-color.php?color=hsl(${hsl})`)
-      settings.set_primary_color("hsl(" + hsl + ")")
-
-      const accentHSL = RGBToHSL(accent[1][0], accent[1][1], accent[1][2])
-      if (hsl[2] <= 30) {
-        accentHSL[2] = 90 // for readability of text
-      }
-      // loadJson(`/api/settings/set-accent-color.php?color=hsl(${accentHSL[0]},${accentHSL[1]}%,${accentHSL[2]}%)`)
-      settings.set_accent_color(`hsl(${accentHSL[0]},${accentHSL[1]}%,${accentHSL[2]}%`)
-      .then(() => {
-        clearInterval(imageLoader)
-        location.reload()
-      })
-    }
-  }, 500)
+  const accentValues = accent.split(", ")
+  const accentLight = parseFloat(accentValues[2])
+  root.style.setProperty('--primary-100', `${primaryValues[0]}, ${primaryValues[1]}, ${lightValue + 20}%)`)
+  root.style.setProperty('--primary-200', `${primaryValues[0]}, ${primaryValues[1]}, ${lightValue + 10}%)`)
+  root.style.setProperty('--primary-300', `${primaryValues[0]}, ${primaryValues[1]}, ${lightValue}%)`)
+  root.style.setProperty('--primary-400', `${primaryValues[0]}, ${primaryValues[1]}, ${lightValue - 5}%)`)
+  root.style.setProperty('--primary-400-trans', `${primaryValues[0]}, ${primaryValues[1]}, ${lightValue - 5}%, 70%)`)
+  root.style.setProperty('--primary-500', `${primaryValues[0]}, ${primaryValues[1]}, ${lightValue - 10}%)`)
+  root.style.setProperty('--primary-600', `${primaryValues[0]}, ${primaryValues[1]}, ${lightValue - 15}%)`)
+  root.style.setProperty('--primary-600-trans', `${primaryValues[0]}, ${primaryValues[1]}, ${lightValue - 15}%, 70%)`)
+  root.style.setProperty('--accent', accent)
+  root.style.setProperty('--accent-trans', `${accentValues[0]}, ${accentValues[1]}, ${accentValues[2]}, 70%`)
 }
 
 function RGBToHSL(r, g, b) {
@@ -1132,12 +1142,12 @@ function RGBToHSL(r, g, b) {
     ? l === r
       ? (g - b) / s
       : l === g
-      ? 2 + (b - r) / s
-      : 4 + (r - g) / s
+        ? 2 + (b - r) / s
+        : 4 + (r - g) / s
     : 0;
   return [
     60 * h < 0 ? 60 * h + 360 : 60 * h,
     100 * (s ? (l <= 0.5 ? s / (2 * l - s) : s / (2 - (2 * l - s))) : 0),
     (100 * (2 * l - s)) / 2,
   ];
-};
+}

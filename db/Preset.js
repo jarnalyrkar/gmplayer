@@ -25,7 +25,7 @@ class Preset {
   }
 
   get_by_theme(theme_id) {
-    const stmt = this.db.prepare(`SELECT preset_id, name, current FROM theme_preset INNER JOIN preset USING(preset_id) WHERE theme_id=? ORDER BY \"order\"`)
+    const stmt = this.db.prepare(`SELECT preset_id, name, current, \"order\" FROM theme_preset INNER JOIN preset USING(preset_id) WHERE theme_id=? ORDER BY \"order\"`)
     const presets = stmt.all(theme_id)
     return presets
   }
@@ -42,7 +42,7 @@ class Preset {
     return info
   }
 
-  set_track_play(preset_id, track_id, playing) {
+  set_track_play(track_id, preset_id, playing) {
     const stmt = this.db.prepare(`UPDATE preset_track SET playing=? WHERE preset_id=? AND track_id=?`)
     const info = stmt.run(playing, preset_id, track_id)
     return info
@@ -64,16 +64,16 @@ class Preset {
     // Find current,and set to 0
     const old_preset = this.get_active_in_theme(theme_id)
     let stmt = this.db.prepare(`UPDATE theme_preset SET current=0 WHERE preset_id=? AND theme_id=?`)
-    stmt.run(old_preset.preset_id, theme_id)
+    stmt.run(old_preset, theme_id)
 
     // set new current in theme_preset
-    stmt = this.db.prepare(`UPDATE theme_preset SET current=1 WHERE preset_id=? AND theme_id=?`)
+    stmt = this.db.prepare(`UPDATE theme_preset SET "current"=1 WHERE preset_id=? AND theme_id=?`)
     const preset = stmt.run(preset_id, theme_id)
     return preset
   }
 
   set_order_in_theme(preset_id, theme_id, order) {
-    const stmt = `UPDATE theme_preset SET \"order\"=? WHERE preset_id=? AND theme_id=?`
+    const stmt = this.db.prepare(`UPDATE theme_preset SET 'order'=? WHERE preset_id=? AND theme_id=?`)
     const info = stmt.run(order, preset_id, theme_id)
     return info.changes
   }

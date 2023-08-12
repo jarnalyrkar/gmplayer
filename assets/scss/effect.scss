@@ -42,16 +42,22 @@
     color: var(--accent);
     background-color: var(--primary-500);
     border: solid 5px var(--primary-300);
-    transition: background-color 300ms cubic-bezier(0.165, 0.84, 0.44, 1);
     pointer-events: initial;
     height: auto;
     width: 100%;
     aspect-ratio: 1/1;
+    transition: background-color 300ms cubic-bezier(0.165, 0.84, 0.44, 1);
     &:hover {
       background-color:var(--primary-600);
     }
     &:active {
-      background-color: var(--accent);
+
+    }
+    &.flash {
+      animation: flash 1s;
+    }
+    &:focus-visible {
+      outline: none;
     }
     &__container {
       margin-top: 1rem;
@@ -60,5 +66,14 @@
   & .actions {
     justify-content: center;
     margin-top: 1rem;
+  }
+}
+
+@keyframes flash {
+  from {
+    background-color: var(--accent);
+  }
+  to {
+    background-color: var(--primary-500);
   }
 }

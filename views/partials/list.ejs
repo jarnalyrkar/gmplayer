@@ -4,7 +4,6 @@
     let index = 0
     %>
     <% list.forEach(function(item) { %>
-
       <%
         let id = null
         switch (type) {
@@ -20,7 +19,7 @@
       %>
       <li class="list__item" data-order="<%= item.order %>" data-id="<%= id %>" draggable="true"
         <% if (type === 'theme' || type === 'preset') { %>
-            <% if (id == init_theme  && type === 'theme') { %>
+            <% if (id == init_theme && type === 'theme') { %>
               data-state="selected"
             <% }
             if (id == init_preset && type === 'preset') { %>

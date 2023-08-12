@@ -71,11 +71,10 @@ class File {
   }
 
   random_in_track(track_id) {
-    console.log("Random in track", track_id)
     if (!track_id) return
     const files_in_track = this.get_by_track(track_id)
     const randIndex = Math.floor(Math.random() * files_in_track.length)
-    return files_in_track[Math.max(0, (randIndex - 1))]
+    return files_in_track[Math.max(0, randIndex)]
   }
 
 }
