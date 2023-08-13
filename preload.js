@@ -5,7 +5,7 @@ contextBridge.exposeInMainWorld('electron', {
     ipcRenderer.send('open-dialog')
   },
   on: (channel, callback) => {
-    ipcRenderer.on(channel, (_, data) => callback(data))
+    ipcRenderer.once(channel, (_, data) => callback(data))
   },
 })
 

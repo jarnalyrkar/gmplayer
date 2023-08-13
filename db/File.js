@@ -27,7 +27,7 @@ class File {
   }
 
   get_by_track(track_id) {
-    const stmt = this.db.prepare(`SELECT file_id, fullpath, filename FROM file INNER JOIN track_file USING(file_id) WHERE track_id=?`)
+    const stmt = this.db.prepare(`SELECT DISTINCT file_id, fullpath, filename FROM file INNER JOIN track_file USING(file_id) WHERE track_id=?`)
     const files = stmt.all(track_id)
     return files
   }
@@ -64,7 +64,6 @@ class File {
     let stmt = this.db.prepare(`SELECT COUNT(*) as count FROM track_file WHERE track_id=? AND file_id=?`)
     const exists = stmt.get(file_id, track_id)
     if (!file_id || !track_id || exists['count'] > 0) return
-
     stmt = this.db.prepare(`INSERT INTO track_file(track_id, file_id) VALUES(?, ?)`)
     const info = stmt.run(track_id, file_id)
     return info

@@ -3,6 +3,7 @@ import CP from '@taufik-nurrohman/color-picker';
 
 // Constants, helpers
 const keystrokes = '123456789abcdefghijklmnopqrstuvwxyz'.split('')
+let electronFiles = []
 let theme_width = document.querySelector('#theme').clientWidth // inline-padding
 document.querySelector('#theme').style.width = theme_width + "px"
 setListHeight();
@@ -86,7 +87,6 @@ function fadeOut(audio) {
   const steps = 0.05
   const interval = 50
   const targetVolume = 0
-  console.log(audio.volume)
   let fadeout = setInterval(() => {
     if (audio.volume.toFixed(2) > targetVolume + steps) {
       audio.volume -= steps
@@ -402,7 +402,6 @@ function createPreset(name, theme_id, list) {
     clone.querySelector('.list__item input[type=button]').value = name
     list.append(clone)
     if (current) {
-      console.log(id, theme_id)
       presets.set_active_in_theme(id, theme_id)
       // loadJson(`/api/preset/set-last.php?preset_id=${id}&theme_id=${theme_id}`)
     }
@@ -602,6 +601,7 @@ document.addEventListener('click', (ev) => {
     const template = document.querySelector('#track-files')
     const clone = template.content.cloneNode(true)
     const dialog = clone.querySelector(".dialog")
+    dialog.setAttribute("data-id", track_id)
 
     // Get all existing files for the track
     // loadJson(`/api/file/get.php?track_id=${track_id}`)
@@ -621,33 +621,33 @@ document.addEventListener('click', (ev) => {
       }
     })
 
-    // listen for uploads
-    dialog.querySelector('#new-track-file').addEventListener('click', (ev) => {
-      const empty = dialog.querySelector('.empty')
-      if (empty) empty.remove()
-
-      window.electron.openDialog();
-      window.electron.on('on-file-select', (paths) => {
-        paths.forEach(path => {
-          window.files.add_file_to_track(path.id, track_id)
-          // Add file to dom:
-          const template = document.querySelector('#file')
-          const clone = template.content.cloneNode(true)
-          const li = clone.querySelector('li')
-          li.setAttribute('data-filename', path.filename)
-          li.setAttribute('data-id', path.id)
-          li.querySelector('.file__name').innerHTML = path.filename
-          document.querySelector('.files').appendChild(clone)
-          tagTracksWithoutFiles()
-        })
-      })
-
-
-    })
-
     document.body.appendChild(clone)
     dialog.classList.add('dialog--show')
   }
+  if (ev.target.id === "new-track-file") {
+    console.log("New track file")
+    const dialog = document.querySelector('.dialog--show')
+    const empty = dialog.querySelector('.empty')
+    if (empty) empty.remove()
+
+    window.electron.openDialog();
+    const track_id = document.querySelector('.dialog--show').getAttribute('data-id')
+    window.electron.on('on-file-select', (paths) => {
+      paths.forEach(path => {
+        window.files.add_file_to_track(path.id, track_id)
+        // Add file to dom:
+        const template = document.querySelector('#file')
+        const clone = template.content.cloneNode(true)
+        const li = clone.querySelector('li')
+        li.setAttribute('data-filename', path.filename)
+        li.setAttribute('data-id', path.id)
+        li.querySelector('.file__name').innerHTML = path.filename
+        dialog.querySelector('.files').appendChild(clone)
+        tagTracksWithoutFiles()
+      })
+     })
+  }
+
 
   if (ev.target.getAttribute('data-action') === 'play') {
     // find if audio-element already exists with this file_id, if so, fade pause
@@ -764,7 +764,6 @@ document.addEventListener('click', (ev) => {
       })
 
       settings.get_accent_color().then(color => {
-        console.log(color)
         const primaryValues = color.substr(4).replace(")", "").replaceAll("%", '').split(', ')
         root.style.setProperty('--accent', `hsl(${primaryValues[0]}, ${primaryValues[1]}%, ${primaryValues[2]}%)`)
         root.style.setProperty('--accent-trans', `hsla(${primaryValues[0]}, ${primaryValues[1]}%, ${primaryValues[2]}%, 70%)`)
@@ -845,8 +844,6 @@ function getTrackSettings(preset_id) {
     })
   })
 }
-
-
 
 document.querySelectorAll('.add-form').forEach(form =>
   form.addEventListener('submit', (ev) => {
@@ -1075,7 +1072,6 @@ if (primaryEl) {
   })
 
   primaryPicker.on('stop', () => {
-    console.log("Set primary color")
     // loadJson(`/api/settings/set-primary-color.php?color=${primaryHSL}`)
     settings.set_primary_color(primaryHSL)
   })
