@@ -2,7 +2,7 @@
   <h2>Add <%= type %></h2>
   <form class="add-form">
     <fieldset class="create-inputs">
-      <input type="text" id="new-<%= type %>" placeholder="<%= placeholder %>" spellcheck="false">
+      <input type="text" id="new-<%= type %>" placeholder="<%= placeholder %>" spellcheck="false" required>
       <button class="button button--action" data-action="add">
         <%- include('../icons/plus.svg') %>
       </button>
