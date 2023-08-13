@@ -4,14 +4,14 @@ const path = require('path')
 const url = require('url')
 const DB = require('./db/DB')
 
-let db_path = "./gmplayer.db"
+let db_path = "./gmplayer-dev.db"
 if (app.isPackaged) {
   db_path = process.resourcesPath + "/gmplayer.db"
 }
-
 const db = new DB(db_path);
 
 const setup_dominant_colors = require('./SetupDominantColors')
+
 
 let mainWindow
 
